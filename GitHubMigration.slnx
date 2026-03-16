@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/GitHub.Migration/GitHub.Migration.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GitHub.Migration.Tests/GitHub.Migration.Tests.csproj" Id="11173f5f-c0a9-41ce-948f-de549d33880c" />
+  </Folder>
+</Solution>

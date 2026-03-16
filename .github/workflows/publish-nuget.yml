@@ -1,0 +1,40 @@
+name: Publish NuGet
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  NUGET_PACKAGES_DIR: ./nupkgs
+  NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+  NUGET_SOURCE: https://nuget.pkg.github.com/gh-migration-tools/index.json
+
+jobs:
+  publish-nuget:
+    # if: github.event.base_ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build and test solution
+        uses: ./.github/actions/build-and-test-solution
+
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release --no-build --output $NUGET_PACKAGES_DIR
+
+      - name: Publish NuGet package and symbols
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_FEED: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        run: |
+          dotnet nuget push $NUGET_PACKAGES_DIR/*.nupkg \
+            --source $NUGET_FEED \
+            --api-key $NUGET_AUTH_TOKEN

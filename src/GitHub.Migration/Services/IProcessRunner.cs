@@ -1,0 +1,11 @@
+namespace GitHub.Migration.Services;
+
+public interface IProcessRunner
+{
+    Task<int> StartAsync(
+        string command,
+        string? workingDirectory = null,
+        IReadOnlyList<KeyValuePair<string, string>>? environmentVariables = null,
+        Action<string>? outputDataReceived = null,
+        Action<string>? errorDataReceived = null);
+}
